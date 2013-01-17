@@ -76,6 +76,99 @@
             });
 
             return result;
+        },
+        startCheckingPasscode = function()
+        {
+            // run passcode check timer
+            setInterval(function()
+            {
+                var messages = chat.getElementsByClassName('plext'),
+                    message;
+
+                for(i = 0; i < messages.length; i++)
+                {
+                    message = messages[i];
+
+                    // check all patterns
+                    for(p = 0; p < patterns.length; p++)
+                    {
+                        match = message.innerText.match(patterns[p]);
+                        if(!match)
+                            continue;
+
+                        passcode = match[0];
+                        if(!(passcode in passcodes))
+                        {
+                            // remember passcode locally to prevent from future redeems
+                            passcodes[passcode] = true;
+
+                            // send passcode to background script
+                            port.postMessage({passcode: passcode});
+
+                            // show message in console and redeem it
+                            showMessage(passcode, passcode);
+                            redeemPasscode(passcode, function(response)
+                            {
+                                var gainedItems = parseRedeemedItems(response);
+                                for(item in gainedItems)
+                                {
+                                    showMessage('<span style="color: yellow">' + item + ' (' + gainedItems[item] + ')<span>')
+                                }
+                            });
+                        }
+
+                        break;
+                    }
+                }
+
+                // remove old messages
+                if(messages.length > 50)
+                {
+                    for(i = 0; i < messages.length - 50; i++)
+                    {
+                        messages[i].parentNode.removeChild(messages[i]);
+                    }
+                }
+
+            }, 1E4);
+        },
+        initTerminal = function()
+        {
+            setTimeout(function()
+            {
+                // wait while chat frame loaded
+                var comm = document.getElementById("comm");
+                if(!comm)
+                {
+                    initTerminal();
+                    return;
+                }
+                
+                // prepare DOM
+                terminal.id = 'passcode-stat-terminal';
+                document.body.appendChild(terminal);
+
+                // remove checkbox of chat-to-map restriction
+                document.getElementById("pl_checkbox").checked = false;
+
+                // expand chat
+                comm.className = "comm_expanded";
+
+                // Jedi mode on
+                // bypass isolated world
+                // run human emulator to prevent of human epsence detection
+                var script = document.createElement("SCRIPT");
+                script.type="text/javascript";
+                script.innerText = "setInterval(function() { Z.d().Ka = u(); }, 3E5 - 5E3)";
+                document.body.appendChild(script);
+                // Jedi mode off
+
+                // show greetins message
+                showMessage('Welcome...');
+
+                startCheckingPasscode();
+                
+            }, 100);
         };
     
     // listen to messages from background
@@ -89,81 +182,8 @@
             }
         });
     });
-    
-    // run passcode check timer
-    setInterval(function()
-    {
-        var messages = chat.getElementsByClassName('plext'),
-            message;
-            
-        for(i = 0; i < messages.length; i++)
-        {
-            message = messages[i];
-            
-            // check all patterns
-            for(p = 0; p < patterns.length; p++)
-            {
-                match = message.innerText.match(patterns[p]);
-                if(!match)
-                    continue;
-                
-                passcode = match[0];
-                if(!(passcode in passcodes))
-                {
-                    // remember passcode locally to prevent from future redeems
-                    passcodes[passcode] = true;
-                    
-                    // send passcode to background script
-                    port.postMessage({passcode: passcode});
-                    
-                    // show message in console and redeem it
-                    showMessage(passcode, passcode);
-                    redeemPasscode(passcode, function(response)
-                    {
-                        var gainedItems = parseRedeemedItems(response);
-                        for(item in gainedItems)
-                        {
-                            showMessage('<span style="color: yellow">' + item + ' (' + gainedItems[item] + ')<span>')
-                        }
-                    });
-                }
-                
-                break;
-            }
-        }
-        
-        // remove old messages
-        if(messages.length > 50)
-        {
-            for(i = 0; i < messages.length - 50; i++)
-            {
-                messages[i].parentNode.removeChild(messages[i]);
-            }
-        }
-        
-    }, 1E4);
-    
-    // prepare DOM
-    terminal.id = 'passcode-stat-terminal';
-    document.body.appendChild(terminal);
-    
-    // remove checkbox of chat-to-map restriction
-    document.getElementById("pl_checkbox").checked = false;
-    
-    // expand chat
-    document.getElementById("comm").className = "comm_expanded";
-    
-    // Jedi mode on
-    // bypass isolated world
-    // run human emulator to prevent of human epsence detection
-    var script = document.createElement("SCRIPT");
-    script.type="text/javascript";
-    script.innerText = "setInterval(function() { Z.d().Ka = u(); }, 3E5 - 5E3)";
-    document.body.appendChild(script);
-    // Jedi mode off
-    
-    // show greetins message
-    showMessage('Welcome...');
+
+    initTerminal();
     
 })();
 
