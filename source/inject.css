@@ -1,0 +1,16 @@
+#passcode-stat-terminal
+{
+    position: absolute;
+    right: 60px;
+    top: 170px;
+    background: black;
+    opacity: 0.9;
+    padding: 10px;
+    overflow: auto;
+    height: 200px;
+    width: 200px;
+    font-size: 10px;
+    font-family: coda_regular;
+    border-radius: 7px;
+    box-shadow: 2px 2px 8px black;
+}

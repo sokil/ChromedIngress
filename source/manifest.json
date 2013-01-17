@@ -1,0 +1,21 @@
+{
+  "name": "Chromed Ingress",
+  "version": "0.3",
+  "manifest_version": 2,
+  "browser_action": 
+  {
+    "default_title": "Chromed Ingress",
+    "default_icon": "img/ingress_logo.png"
+  },
+  "background": 
+  {
+    "scripts": ["background.js"]
+  },
+  "permissions": 
+  [
+    "storage",
+    "tabs",
+    "http://ingress.com/intel",
+    "http://www.ingress.com/intel"
+  ]
+}
