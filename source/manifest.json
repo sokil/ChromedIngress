@@ -1,6 +1,6 @@
 {
   "name": "Chromed Ingress",
-  "version": "0.3",
+  "version": "0.3.1",
   "manifest_version": 2,
   "browser_action": 
   {
