@@ -1,7 +1,7 @@
 (function()
 {                
     //init functions
-    var chat        = document.getElementById('plext_container'),
+    var chat,
         terminal    = document.createElement('div'),
         port        = chrome.extension.connect(),
         passcodes   = {},
@@ -109,11 +109,15 @@
                             showMessage(passcode, passcode);
                             redeemPasscode(passcode, function(response)
                             {
-                                var gainedItems = parseRedeemedItems(response);
-                                for(item in gainedItems)
+                                var gainedItems = parseRedeemedItems(response),
+                                    gainedItemsHTML = '';
+                                    
+                                for(var item in gainedItems)
                                 {
-                                    showMessage('<span style="color: yellow">' + item + ' (' + gainedItems[item] + ')<span>')
+                                    gainedItemsHTML += '<span style="color: yellow">' + item + ' (' + gainedItems[item] + ')</span><br />';
                                 }
+                                
+                                showMessage(gainedItemsHTML);
                             });
                         }
 
@@ -137,8 +141,8 @@
             setTimeout(function()
             {
                 // wait while chat frame loaded
-                var comm = document.getElementById("comm");
-                if(!comm)
+                chat = document.getElementById('plext_container')
+                if(!chat)
                 {
                     initTerminal();
                     return;
@@ -152,7 +156,7 @@
                 document.getElementById("pl_checkbox").checked = false;
 
                 // expand chat
-                comm.className = "comm_expanded";
+                document.getElementById("comm").className = "comm_expanded";
 
                 // Jedi mode on
                 // bypass isolated world
@@ -183,6 +187,7 @@
         });
     });
 
+    // run
     initTerminal();
     
 })();
