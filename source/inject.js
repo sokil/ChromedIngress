@@ -5,7 +5,7 @@
         terminal    = document.createElement('div'),
         port        = chrome.extension.connect(),
         passcodes   = {},
-        patterns    = [/\d[a-z]{2}\d[a-z]{4,}[a-z]\d[a-z]\d[a-z]/, /[a-z]{4,}\d{2}[a-z]/],
+        patterns    = [/\d[a-z]{2}\d[a-z]{2,}[a-z]\d[a-z]\d[a-z]/, /[a-z]{2,}\d{2}[a-z]/],
         showMessage = function(message, id)
         {            
             var msg = document.createElement('div');
