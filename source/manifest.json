@@ -1,6 +1,6 @@
 {
   "name": "Chromed Ingress",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "manifest_version": 2,
   "browser_action": 
   {
@@ -15,7 +15,13 @@
   [
     "storage",
     "tabs",
+    "notifications",
     "http://ingress.com/intel",
     "http://www.ingress.com/intel"
+  ],
+  "web_accessible_resources":
+  [
+    "res/notice.mp3",
+    "img/ingress_logo_over.png"
   ]
 }

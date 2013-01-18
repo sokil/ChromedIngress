@@ -16,6 +16,31 @@
             
             terminal.appendChild(msg);
         },
+        playSound = function(filename)
+        {
+            // get audio tag
+            var audio = document.getElementById('ci-sound');
+            if(!audio)
+            {
+                audio = document.createElement('AUDIO');
+                audio.id = 'ci-sound';
+                document.body.appendChild(audio);
+            }    
+            
+            // play
+            if(audio.canPlayType && (('no' != audio.canPlayType('audio/mpeg')) && ('' != audio.canPlayType('audio/mpeg'))))
+            {
+                // HTML5 audio supported
+                audio.src = filename;
+                audio.load();
+                audio.play();
+            }
+        },
+        notify = function()
+        {
+            // play sound
+            playSound( chrome.extension.getURL('./res/notice.mp3') );
+        },
         redeemPasscode = function(passcode, callback)
         {
             var csrftoken = document.cookie.match(/csrftoken=(.+?);/)[1],
@@ -118,6 +143,9 @@
                                 }
                                 
                                 showMessage(gainedItemsHTML);
+                                
+                                // play sound
+                                notify();
                             });
                         }
 
