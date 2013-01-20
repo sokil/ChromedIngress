@@ -2,6 +2,8 @@
 {                
     //init functions
     var chat,
+        storage     = chrome.storage.local,
+        options,
         terminal    = document.createElement('div'),
         port        = chrome.extension.connect(),
         passcodes   = {},
@@ -145,7 +147,8 @@
                                 showMessage(gainedItemsHTML);
                                 
                                 // play sound
-                                notify();
+                                if(options.enable_sound_notification == "on")
+                                    notify();
                             });
                         }
 
@@ -166,6 +169,24 @@
         },
         initTerminal = function()
         {
+            // init options
+            storage.get("options", function(item)
+            {
+                options = item.options;
+                
+                // initialise options by default values
+                if(!options)
+                {
+                    options =
+                    {
+                        enable_sound_notification: "on"
+                    };
+                    
+                    storage.set("options", options);
+                }
+            });
+            
+            // load terminal
             setTimeout(function()
             {
                 // wait while chat frame loaded
