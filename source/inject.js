@@ -182,7 +182,7 @@
                         enable_sound_notification: "on"
                     };
                     
-                    storage.set("options", options);
+                    storage.set({"options": options});
                 }
             });
             
