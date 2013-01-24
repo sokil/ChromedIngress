@@ -1,7 +1,7 @@
 {
   "name": "Chromed Ingress",
   "default_locale": "uk",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "manifest_version": 2,
   "browser_action": 
   {
