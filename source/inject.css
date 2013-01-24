@@ -14,3 +14,10 @@
     border-radius: 7px;
     box-shadow: 2px 2px 8px black;
 }
+
+.pl_player .RESISTANCE, .pl_player .ALIENS,
+.pl_broad .RESISTANCE, .pl_broad .ALIENS
+{
+    cursor: pointer;
+    text-decoration: underline;
+}

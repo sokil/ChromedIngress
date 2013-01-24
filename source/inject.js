@@ -206,6 +206,24 @@
 
                 // expand chat
                 document.getElementById("comm").className = "comm_expanded";
+                
+                // make nicks clickable
+                document.getElementById('plext_container').onclick = function(e)
+                {
+                    var t = e.target,
+                        messageInput = document.getElementById('message');
+
+                    if((t.tagName.toUpperCase() == 'SPAN') && t.className.match(/(RESISTANCE|ALIENS)/))
+                    {
+                        // prepare nick
+                        var nick = t.innerText;
+                        if(nick.substr(-2) == ': ')
+                            nick = nick.substr(0, t.innerText.length - 2);
+                        
+                        // put nick to message textbox
+                        messageInput.value = '@' + nick + ', ' + messageInput.value;
+                    }
+                };
 
                 // Jedi mode on
                 // bypass isolated world
